@@ -1,0 +1,15 @@
+{
+  "name": "reposketch-astral-cartographer",
+  "version": "1.0.0",
+  "description": "RepoSketch – Interactive Codebase Architecture & AST Explorer",
+  "private": true,
+  "scripts": {
+    "dev:backend": "cd backend && npm run dev",
+    "dev:frontend": "cd frontend && npm run dev",
+    "install:all": "cd backend && npm install && cd ../frontend && npm install",
+    "start": "cd backend && npm start"
+  },
+  "keywords": ["ast", "dependency-graph", "codebase-analysis", "d3", "react", "hackathon"],
+  "author": "Team She.jsx — Webster 2026",
+  "license": "MIT"
+}
