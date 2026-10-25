@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { useRepoStore } from './store/repoStore'
 import Header from './components/Layout/Header'
 import Sidebar from './components/Layout/Sidebar'
@@ -8,8 +7,30 @@ import HealthDashboard from './components/Health/HealthDashboard'
 import PathfinderPanel from './components/Onboarding/PathfinderPanel'
 import LoadingSpinner from './components/Layout/LoadingSpinner'
 
+const EXAMPLE_REPOS = [
+  'facebook/react',
+  'vercel/next.js',
+  'vitejs/vite',
+  'expressjs/express',
+]
+
+const FEATURES = [
+  { icon: '🔭', label: 'Dependency Atlas' },
+  { icon: '🧬', label: 'AST Parsing' },
+  { icon: '♻', label: 'Circular Deps' },
+  { icon: '🏥', label: 'Health Score' },
+  { icon: '🗺', label: 'Onboarding Map' },
+  { icon: '🔥', label: 'Complexity Heatmap' },
+  { icon: '💥', label: 'Blast Radius' },
+  { icon: '⚡', label: 'Live Search' },
+]
+
 export default function App() {
-  const { isLoading, repoId, viewMode, error } = useRepoStore()
+  const { isLoading, repoId, viewMode, error, ingestRepo } = useRepoStore()
+
+  const handleExample = (slug) => {
+    ingestRepo(`https://github.com/${slug}`)
+  }
 
   return (
     <div className="app-shell">
@@ -18,69 +39,69 @@ export default function App() {
         <Sidebar />
         <main className="app-main">
           {isLoading && <LoadingSpinner />}
+
           {error && (
             <div className="error-banner">
-              <span className="error-icon">⚠</span>
+              <span style={{ fontSize: 15 }}>⚠</span>
               <span>{error}</span>
             </div>
           )}
+
           {!isLoading && repoId && (
-            <>
+            <div style={{ display: 'flex', flexDirection: 'column', flex: 1, overflow: 'hidden', animation: 'fade-in 0.4s ease' }}>
               {viewMode === 'graph' && (
                 <div className="graph-layout">
-                  <div className="graph-area">
-                    <DependencyGraph />
-                  </div>
-                  <div className="panel-area">
-                    <CodePanel />
-                  </div>
+                  <div className="graph-area"><DependencyGraph /></div>
+                  <div className="panel-area"><CodePanel /></div>
                 </div>
               )}
               {viewMode === 'health' && <HealthDashboard />}
               {viewMode === 'onboarding' && <PathfinderPanel />}
-            </>
+            </div>
           )}
+
           {!isLoading && !repoId && (
             <div className="welcome-screen">
               <div className="welcome-content">
-                <div className="astral-logo">
-                  <div className="star-ring">
-                    <div className="star-core">✦</div>
-                    <div className="orbit orbit-1" />
-                    <div className="orbit orbit-2" />
+                {/* Animated orb */}
+                <div className="hero-logo">
+                  <div className="hero-orb">
+                    <div className="hero-orb-inner">
+                      <span className="hero-orb-glyph">✦</span>
+                    </div>
                   </div>
                 </div>
+
                 <h1 className="welcome-title">RepoSketch</h1>
                 <p className="welcome-subtitle">The Astral Cartographer</p>
+
                 <p className="welcome-desc">
-                  Navigate massive codebases like ancient star maps.<br />
-                  Paste a GitHub URL above to begin your journey.
+                  Massive codebases are <strong>sprawling galaxies</strong>.<br />
+                  We map every star, every orbit, every black hole.
                 </p>
+
+                {/* Feature pills */}
                 <div className="welcome-features">
-                  <div className="feature-card">
-                    <span className="feature-icon">🔭</span>
-                    <span>Dependency Atlas</span>
-                  </div>
-                  <div className="feature-card">
-                    <span className="feature-icon">🧬</span>
-                    <span>AST Deep Parsing</span>
-                  </div>
-                  <div className="feature-card">
-                    <span className="feature-icon">♻</span>
-                    <span>Circular Detection</span>
-                  </div>
-                  <div className="feature-card">
-                    <span className="feature-icon">🏥</span>
-                    <span>Health Scoring</span>
-                  </div>
-                  <div className="feature-card">
-                    <span className="feature-icon">🗺</span>
-                    <span>Onboarding Paths</span>
-                  </div>
-                  <div className="feature-card">
-                    <span className="feature-icon">🔥</span>
-                    <span>Complexity Heatmap</span>
-                  </div>
+                  {FEATURES.map(f => (
+                    <div key={f.label} className="feature-pill">
+                      <span className="feature-pill-icon">{f.icon}</span>
+                      <span>{f.label}</span>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Example repos */}
+                <div className="example-repos">
+                  <span className="example-label">Try →</span>
+                  {EXAMPLE_REPOS.map(slug => (
+                    <button
+                      key={slug}
+                      className="example-chip"
+                      onClick={() => handleExample(slug)}
+                    >
+                      {slug}
+                    </button>
+                  ))}
                 </div>
               </div>
             </div>
