@@ -398,34 +398,44 @@ html, body, #root {
 /* ── Graph SVG Styles ────────────────────────────────────────────────────── */
 .graph-svg { width: 100%; height: 100%; }
 
-.graph-node circle {
-  transition: r 0.2s, filter 0.2s;
-  cursor: pointer;
+/* Galaxy graph node animations */
+.gnode .main-circle {
+  transition: filter 0.2s, stroke-width 0.15s;
+}
+.gnode .corona {
+  animation: corona-pulse 3s ease-in-out infinite;
+  transform-origin: center;
+}
+.gnode .halo {
+  animation: halo-breathe 4s ease-in-out infinite;
+  transform-origin: center;
+}
+.gnode .label-text {
+  transition: opacity 0.2s;
+}
+.gnode .specular {
+  opacity: 0.6;
 }
 
-.graph-node:hover circle {
-  filter: brightness(1.3) drop-shadow(0 0 8px currentColor);
+/* Edges */
+.edges path {
+  transition: stroke-opacity 0.15s, stroke-width 0.15s, stroke 0.15s;
 }
-
-.graph-node.selected circle {
-  filter: drop-shadow(0 0 12px currentColor);
-  stroke: white !important;
-  stroke-width: 2px;
-}
-
-.graph-link {
-  stroke-opacity: 0.4;
-  transition: stroke-opacity 0.2s;
-}
-
-.graph-link.circular { stroke: var(--color-red) !important; stroke-opacity: 0.8; }
-.graph-link.highlighted { stroke-opacity: 1; }
 
 .node-label {
   font-size: 10px;
   fill: var(--text-secondary);
   pointer-events: none;
   user-select: none;
+}
+
+@keyframes corona-pulse {
+  0%, 100% { stroke-opacity: 0.25; r: attr(r); }
+  50%       { stroke-opacity: 0.55; }
+}
+@keyframes halo-breathe {
+  0%, 100% { fill-opacity: 0.12; }
+  50%       { fill-opacity: 0.22; }
 }
 
 /* ── Health Dashboard ────────────────────────────────────────────────────── */
